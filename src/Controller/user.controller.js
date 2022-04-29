@@ -1,6 +1,7 @@
 require("dotenv").config();
 const jwt=require("jsonwebtoken");
 const User=require("../model/user.model");
+
 let newtoken=(user)=>{
     return jwt.sign({user},"shhhhhh")
 }
@@ -39,8 +40,13 @@ const login=async (req,res)=>{
         if(!user){
             return res.status(404).send("email or password incorrect");
         }
-
-     res.status(200).send(user)
+        const match = user.checkPassword(req.body.password);
+        if (!match)
+      return res
+        .status(400)
+        .send({ message: "Please try another email or password" });
+        const token = newtoken(user);
+     res.status(200).send({token,name:user.user_name})
     }
     catch(e){
         res.status(500).send(e.message);
