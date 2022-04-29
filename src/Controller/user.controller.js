@@ -1,10 +1,13 @@
 require("dotenv").config();
+const jwt=require("jsonwebtoken");
 const User=require("../model/user.model");
-
+let newtoken=(user)=>{
+    return jwt.sign({user},"shhhhhh")
+}
 const register=async(req,res)=>{
     try{
         let user
-        // console.log(req.body)
+      
         if(req.body.email){
             user=await User.findOne({email:req.body.email})  
         }else{
@@ -15,7 +18,10 @@ const register=async(req,res)=>{
             return res.send("Use another Email or mobile To login")
         }
         user=await User.create(req.body);
-        res.status(201).send(user);
+        let token=newtoken(user);
+        res.status(201).send({token,name:user.user_name})
+
+        
     }
     catch(e){
         res.status(500).send(e.message);
