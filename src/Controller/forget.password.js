@@ -27,7 +27,8 @@ router.get("/",async(req,res)=>{
     try{
         let user;
         if(req.body.phone){
-        user=User.findOne({phone:req.body.phone}).lean().exec();
+        user=await User.findOne({phone:req.body.phone}).lean().exec();
+        
         if(user){
             res.send({status:true});
         }else{
@@ -36,7 +37,7 @@ router.get("/",async(req,res)=>{
         
         }
         else if(req.body.email){
-            user=User.findOne({email:req.body.email}).lean().exec(); 
+            user=await User.findOne({email:req.body.email}).lean().exec(); 
             if(user){
                 res.send({status:true});
             }else{
