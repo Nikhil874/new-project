@@ -9,7 +9,7 @@ router.patch("/",async(req,res)=>{
     user=await User.findOneAndUpdate({email:req.body.email},{password:req.body.password},{new:true}).lean().exec();
     res.status(200).send(user);
    }else if(req.body.phone){
-    // console.log(req.body.phone)
+    console.log(req.body.phone)
     user=await User.findOneAndUpdate({phone:req.body.phone},{password:req.body.password},{new:true}).lean().exec(); 
     res.status(200).send(user); 
    }
