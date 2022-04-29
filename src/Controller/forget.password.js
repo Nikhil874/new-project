@@ -1,8 +1,17 @@
 const express=require("express");
-const router=express.Router();
+var bodyParser = require('body-parser');
 const User=require("../model/user.model")
-router.patch("/",async(req,res)=>{
-   
+const bcrypt = require("bcryptjs/dist/bcrypt");
+// const hashing=require("../middlewares/hash")
+const router=express.Router();
+const hashing=(req,res,next)=>{
+    // console.log("req")
+    var hash=bcrypt.hashSync(req.body.password,8);
+    req.body.password=hash;
+    return next();
+}
+router.patch("/",hashing,async(req,res)=>{
+//    console.log(req)
     try{
         let user;
    if(req.body.email){
